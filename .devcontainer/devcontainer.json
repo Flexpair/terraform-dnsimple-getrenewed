@@ -1,0 +1,24 @@
+
+{
+  "name": "flexpair-devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-20.04",
+
+  "features": {
+    // Terraform-CLI (zieht zur Build-Zeit den neuesten 1.x-Release)
+    "ghcr.io/devcontainers/features/terraform:1": {}
+  },
+  
+  "postCreateCommand": "terraform -install-autocomplete",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "hashicorp.terraform"
+      ],
+      "settings": {
+        "terraform.formatOnSave": true,
+        "terraform.codelens.enabled": true
+      }
+    }
+  }
+}
