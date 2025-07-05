@@ -2,8 +2,9 @@ run "matching_certs" {
   command = apply
 
   variables {
-    registered_domain = "flexpair.app"
-    sub_domain_name   = "*"
+    dnsimple_account_id = "124454"
+    registered_domain   = "flexpair.app"
+    sub_domain_name     = "*"
   }
 
   # Check that at least one matching certificate was found
