@@ -28,3 +28,12 @@ data "dnsimple_certificate" "ssl_certificate" {
   certificate_id = local.last_expiring.id
 }
 
+data "tls_certificate" "server_certificate" {
+  content = data.dnsimple_certificate.ssl_certificate.server_certificate
+}
+
+locals {
+  certificate_expires_at = data.tls_certificate.server_certificate.certificates[0].not_after
+}
+
+

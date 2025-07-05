@@ -1,4 +1,4 @@
-run "matching_certs" {
+run "more_than_30_days" {
   command = apply
 
   variables {
@@ -13,10 +13,10 @@ run "matching_certs" {
     error_message = "Found no matching certificate for this name."
   }
 
-  # Newest certificate must expire ≥ 30 days in the future
+  # Retrieved certificate must expire ≥ 30 days in the future
   assert {
     condition = timecmp(
-      local.last_expiring.expires_at,
+      local.certificate_expires_at,
       timeadd(timestamp(), "720h") # current moment + 30 days
     ) >= 0
     error_message = "Newest certificate expires in less than 30 days."
