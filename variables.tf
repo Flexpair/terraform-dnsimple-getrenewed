@@ -3,14 +3,18 @@ variable "registered_domain" {
   type        = string
 }
 
-variable "dnsimple_account_token" {
+variable "sub_domain_name" {
   description = ""
   type        = string
 }
 
-variable "account_id" {
+variable "dnsimple_token" {
+  description = ""
   type        = string
-  default     = "124454"
+}
+
+variable "dnsimple_account_id" {
+  type        = string
   description = "DNSimple Account-ID"
 }
 
