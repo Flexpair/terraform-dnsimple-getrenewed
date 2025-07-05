@@ -23,17 +23,17 @@ provider "dnsimple" {
   account = var.dnsimple_account_id
 }
 
-data "dnsimple_certificate" "ssl_certificate" {
+data "dnsimple_certificate" "last_expiring" {
   domain         = var.registered_domain
   certificate_id = local.last_expiring.id
 }
 
 data "tls_certificate" "server_certificate" {
-  content = data.dnsimple_certificate.ssl_certificate.server_certificate
+  content = data.dnsimple_certificate.last_expiring.server_certificate
 }
 
 locals {
-  certificate_expires_at = data.tls_certificate.server_certificate.certificates[0].not_after
+  certificate_expires_at  = data.tls_certificate.server_certificate.certificates[0].not_after
+  require_validity_until  = timeadd(timestamp(), "2016h") # 12 weeks
+  require_new_certificate = timecmp(local.certificate_expires_at, local.require_validity_until) < 0
 }
-
-
