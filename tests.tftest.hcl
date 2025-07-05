@@ -1,5 +1,5 @@
 run "matching_certs" {
-  command = plan
+  command = apply
 
   variables {
     dnsimple_account_id = "124454"
