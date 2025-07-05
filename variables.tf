@@ -9,7 +9,7 @@ variable "sub_domain_name" {
 }
 
 variable "dnsimple_token" {
-  description = ""
+  description = "DNSimple API Token"
   type        = string
 }
 
