@@ -1,8 +1,5 @@
-# Configure the DNSimple provider
-provider "dnsimple" {
-  token   = var.dnsimple_token
-  account = var.dnsimple_account_id
-}
+# credentials are set via environment variables
+provider "dnsimple" {}
 
 variables {
   registered_domain   = "flexpair.app"
