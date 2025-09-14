@@ -11,6 +11,7 @@ variable "sub_domain_name" {
 variable "dnsimple_token" {
   description = "DNSimple API Token"
   type        = string
+  sensitive   = true
 }
 
 
