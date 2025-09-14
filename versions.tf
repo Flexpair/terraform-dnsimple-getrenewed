@@ -6,7 +6,7 @@ terraform {
     }
     dnsimple = {
       source  = "dnsimple/dnsimple"
-      version = "1.9.1"
+      version = ">= 1.10.0"
     }
     tls = {
       source  = "hashicorp/tls"

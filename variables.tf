@@ -13,8 +13,4 @@ variable "dnsimple_token" {
   type        = string
 }
 
-variable "dnsimple_account_id" {
-  type        = string
-  description = "DNSimple Account-ID"
-}
 

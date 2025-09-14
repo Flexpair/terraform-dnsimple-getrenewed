@@ -1,5 +1,9 @@
+data "dnsimple_zone" "selected" {
+  name = var.registered_domain
+}
+
 data "http" "certs" {
-  url = "https://api.dnsimple.com/v2/${var.dnsimple_account_id}/domains/${var.registered_domain}/certificates?sort=expiration:desc"
+  url = "https://api.dnsimple.com/v2/${data.dnsimple_zone.selected.account_id}/domains/${var.registered_domain}/certificates?sort=expiration:desc"
 
   request_headers = {
     Authorization = "Bearer ${var.dnsimple_token}"
