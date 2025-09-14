@@ -17,12 +17,6 @@ locals {
   last_expiring = local.matching_certs[0]
 }
 
-# Configure the DNSimple provider
-provider "dnsimple" {
-  token   = var.dnsimple_token
-  account = var.dnsimple_account_id
-}
-
 data "dnsimple_certificate" "last_expiring" {
   domain         = var.registered_domain
   certificate_id = local.last_expiring.id
