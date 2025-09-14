@@ -1,11 +1,16 @@
+# Configure the DNSimple provider
+provider "dnsimple" {
+  token   = var.dnsimple_token
+  account = var.dnsimple_account_id
+}
+
+variables {
+  registered_domain   = "flexpair.app"
+  sub_domain_name     = "*"
+}
+
 run "more_than_30_days" {
   command = apply
-
-  variables {
-    dnsimple_account_id = "124454"
-    registered_domain   = "flexpair.app"
-    sub_domain_name     = "*"
-  }
 
   # Check that at least one matching certificate was found
   assert {
