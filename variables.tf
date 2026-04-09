@@ -1,17 +1,9 @@
 variable "registered_domain" {
-  description = ""
+  description = "The registered domain name in DNSimple (e.g. flexpair.app)"
   type        = string
 }
 
 variable "sub_domain_name" {
-  description = ""
+  description = "Subdomain prefix to match (e.g. * for wildcard)"
   type        = string
 }
-
-variable "dnsimple_token" {
-  description = "DNSimple API Token"
-  type        = string
-  sensitive   = true
-}
-
-

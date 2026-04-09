@@ -6,11 +6,23 @@ No infrastructure resources are created — this module only reads data.
 
 ## Usage
 
+The module requires a configured `restapi` provider for DNSimple API access. The API token is passed via the provider config, which supports ephemeral values (no state leakage).
+
 ```hcl
+provider "restapi" {
+  uri                  = "https://api.dnsimple.com"
+  write_returns_object = true
+
+  headers = {
+    "Accept" = "application/json"
+  }
+
+  bearer_token = var.dnsimple_account_token
+}
+
 module "getrenewed" {
   source            = "app.terraform.io/Flexpair/getrenewed/dnsimple"
-  version           = "1.1.2"
-  dnsimple_token    = var.dnsimple_account_token
+  version           = "2.0.0"
   registered_domain = "flexpair.app"
   sub_domain_name   = "*"
 }
@@ -19,18 +31,21 @@ module "getrenewed" {
 ## How It Works
 
 1. Looks up the DNSimple zone for `registered_domain`
-2. Queries the DNSimple REST API for all certificates, sorted by expiration (descending)
+2. Queries the DNSimple REST API (via `restapi` provider) for all certificates, sorted by expiration (descending)
 3. Filters to certificates matching `{sub_domain_name}.{registered_domain}`
 4. Fetches the full certificate data (private key, server cert, chain) for the longest-valid match
 5. Compares expiration to `now + 12 weeks` and sets `require_new_certificate` accordingly
 
+## Breaking Change in v2.0.0
+
+The `dnsimple_token` input variable has been removed. Authentication is now handled by the `restapi` provider, which receives the token in its provider config. This is required for HCP Terraform Stacks compatibility, where ephemeral tokens cannot be used in `data.http` request headers.
+
 ## Inputs
 
-| Variable | Type | Sensitive | Description |
-|----------|------|-----------|-------------|
-| `registered_domain` | `string` | no | The registered domain in DNSimple (e.g. `flexpair.app`) |
-| `sub_domain_name` | `string` | no | Subdomain prefix to match (e.g. `*` for wildcard) |
-| `dnsimple_token` | `string` | yes | DNSimple API bearer token |
+| Variable | Type | Description |
+|----------|------|-------------|
+| `registered_domain` | `string` | The registered domain in DNSimple (e.g. `flexpair.app`) |
+| `sub_domain_name` | `string` | Subdomain prefix to match (e.g. `*` for wildcard) |
 
 ## Outputs
 
@@ -45,10 +60,10 @@ module "getrenewed" {
 
 | Dependency | Version |
 |------------|---------|
-| Terraform | `>= 1.7.0` |
-| `hashicorp/http` | `= 3.5.0` |
+| Terraform | `>= 1.12.0` |
+| `Mastercard/restapi` | `>= 3.0.0` |
 | `dnsimple/dnsimple` | `>= 1.10.0` |
-| `hashicorp/tls` | `= 4.1.0` |
+| `hashicorp/tls` | `>= 4.1.0` |
 
 ## License
 

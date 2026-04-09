@@ -2,28 +2,17 @@ data "dnsimple_zone" "selected" {
   name = var.registered_domain
 }
 
-data "http" "certs" {
-  url = "https://api.dnsimple.com/v2/${data.dnsimple_zone.selected.account_id}/domains/${var.registered_domain}/certificates?sort=expiration:desc"
-
-  request_headers = {
-    Authorization = "Bearer ${var.dnsimple_token}"
-    Accept        = "application/json"
-  }
-}
-
-locals {
-  all_certs = jsondecode(data.http.certs.response_body).data
-
-  common_name = "${var.sub_domain_name}.${var.registered_domain}"
-
-  matching_certs = [for cert in local.all_certs : cert if cert.common_name == local.common_name]
-
-  last_expiring = local.matching_certs[0]
+data "restapi_object" "latest_cert" {
+  path         = "/v2/${data.dnsimple_zone.selected.account_id}/domains/${var.registered_domain}/certificates"
+  search_key   = "common_name"
+  search_value = "${var.sub_domain_name}.${var.registered_domain}"
+  results_key  = "data"
+  query_string = "sort=expiration:desc"
 }
 
 data "dnsimple_certificate" "last_expiring" {
   domain         = var.registered_domain
-  certificate_id = local.last_expiring.id
+  certificate_id = data.restapi_object.latest_cert.id
 }
 
 data "tls_certificate" "server_certificate" {
