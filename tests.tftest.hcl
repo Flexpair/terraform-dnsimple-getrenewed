@@ -1,5 +1,7 @@
-# credentials are set via environment variables
+# dnsimple provider reads DNSIMPLE_TOKEN + DNSIMPLE_ACCOUNT from env
 provider "dnsimple" {}
+
+# restapi provider needs bearer_token explicitly (no env var support)
 provider "restapi" {
   uri                  = "https://api.dnsimple.com"
   write_returns_object = true
@@ -7,6 +9,8 @@ provider "restapi" {
   headers = {
     "Accept" = "application/json"
   }
+
+  bearer_token = var.dnsimple_token
 }
 
 variables {

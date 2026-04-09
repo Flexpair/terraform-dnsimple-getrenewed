@@ -42,10 +42,11 @@ The `dnsimple_token` input variable has been removed. Authentication is now hand
 
 ## Inputs
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `registered_domain` | `string` | The registered domain in DNSimple (e.g. `flexpair.app`) |
-| `sub_domain_name` | `string` | Subdomain prefix to match (e.g. `*` for wildcard) |
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `registered_domain` | `string` | yes | The registered domain in DNSimple (e.g. `flexpair.app`) |
+| `sub_domain_name` | `string` | yes | Subdomain prefix to match (e.g. `*` for wildcard) |
+| `dnsimple_token` | `string` | no | DNSimple API token. Only needed when the caller does not configure the `restapi` provider externally (e.g. in TFC module tests). |
 
 ## Outputs
 
