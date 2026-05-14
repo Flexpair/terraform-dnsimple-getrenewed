@@ -1,6 +1,6 @@
 # terraform-dnsimple-getrenewed
 
-Terraform data-only module that retrieves the most recently issued TLS/SSL certificate for a given subdomain from [DNSimple](https://dnsimple.com/) and checks whether it is still valid long enough or needs renewal.
+[Terraform](https://en.wikipedia.org/wiki/Terraform_(software)) data-only module that retrieves the most recently issued TLS/SSL certificate for a given subdomain from [DNSimple](https://dnsimple.com/) and checks whether it is still valid long enough or needs renewal.
 
 No infrastructure resources are created — this module only reads data.
 
@@ -67,4 +67,4 @@ The `dnsimple_token` input variable has been removed. Authentication is now hand
 
 ## License
 
-Apache 2.0
+[Apache 2.0](https://en.wikipedia.org/wiki/Apache_License)
