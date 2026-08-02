@@ -1,6 +1,6 @@
 # terraform-dnsimple-getrenewed
 
-[Terraform](https://en.wikipedia.org/wiki/Terraform_(software)) data-only module that retrieves the most recently issued TLS/SSL certificate for a given subdomain from [DNSimple](https://dnsimple.com/) and checks whether it is still valid long enough or needs renewal.
+[Terraform](https://en.wikipedia.org/wiki/Terraform_(software)) data-only module that retrieves the most recently issued TLS/SSL certificate for a given subdomain from [DNSimple](https://dnsimple.com/).
 
 No infrastructure resources are created — this module only reads data.
 
@@ -34,7 +34,10 @@ module "getrenewed" {
 2. Queries the DNSimple REST API (via `restapi` provider) for all certificates, sorted by expiration (descending)
 3. Filters to certificates matching `{sub_domain_name}.{registered_domain}`
 4. Fetches the full certificate data (private key, server cert, chain) for the longest-valid match
-5. Compares expiration to `now + 12 weeks` and sets `require_new_certificate` accordingly
+
+The lookup runs whenever Terraform refreshes the module's data sources. DNSimple owns certificate
+renewal; this module does not request renewals or trigger a deployment when a new certificate is
+issued. Callers install the latest certificate during their normal deployment lifecycle.
 
 ## Breaking Change in v2.0.0
 
@@ -53,8 +56,6 @@ The `dnsimple_token` input variable has been removed. Authentication is now hand
 |--------|-----------|-------------|
 | `ssl_certificate` | yes | Full certificate data (server cert, private key, chain, root) |
 | `certificate_expires_at` | no | Certificate expiration timestamp |
-| `require_validity_until` | no | Required validity horizon (`now + 12 weeks`) |
-| `require_new_certificate` | no | `true` if the certificate expires before the 12-week horizon |
 
 ## Requirements
 
