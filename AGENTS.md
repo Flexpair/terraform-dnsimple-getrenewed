@@ -1,8 +1,8 @@
 # Agent Guide — `terraform-dnsimple-getrenewed`
 
 Data-only Terraform module: retrieves the most recently issued TLS certificate for a subdomain from
-DNSimple and decides whether renewal is needed (expiry within 12 weeks). **Creates no resources** —
-it only emits outputs for certificate-lifecycle decisions in Flexpair.
+DNSimple. **Creates no resources** — it exposes the latest certificate and its expiration time for
+Flexpair deployments.
 
 ## How AI agents load these instructions
 
@@ -23,9 +23,9 @@ rather than duplicating them elsewhere.
 
 - Terraform `>= 1.12.0`; providers `dnsimple/dnsimple >= 1.10.0`, `hashicorp/tls >= 4.1.0`,
   `Mastercard/restapi >= 3.0.0` (the REST provider works around `data.http` limits for the API call).
-- Key files: `main.tf` (zone lookup → latest-cert query → expiry parse → renewal flag),
+- Key files: `main.tf` (zone lookup → latest-cert query → expiry parse),
   `variables.tf` (`registered_domain`, `sub_domain_name`), `output.tf` (`ssl_certificate`
-  [sensitive], `certificate_expires_at`, `require_validity_until`, `require_new_certificate`).
+  [sensitive], `certificate_expires_at`).
 - Published to the HCP private registry as `app.terraform.io/Flexpair/getrenewed/dnsimple`.
 
 ## Conventions and gotchas
@@ -33,8 +33,8 @@ rather than duplicating them elsewhere.
 - **Token is provider-level, not a module input.** v2.0.0 removed the `dnsimple_token` variable
   (required for HCP Terraform Stacks). Never reintroduce it, hardcode tokens, or land them in state;
   supply credentials via provider config / TFC secrets.
-- **12-week renewal horizon is hard-coded** (`"2016h"` in `main.tf`); changing it means editing the
-  module.
+- DNSimple owns certificate renewal. The module reads the latest issued certificate on Terraform
+  refresh but does not request renewal or trigger a deployment when DNSimple issues a replacement.
 - `ssl_certificate` is `sensitive` and contains the private key — handle with care in any caller.
 - Publish new versions per the umbrella's `terraform-registry-publishing` scoped rule.
 

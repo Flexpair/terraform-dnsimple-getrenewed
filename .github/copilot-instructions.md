@@ -6,7 +6,7 @@ duplicated, drifting rules.
 
 - Read [`AGENTS.md`](../AGENTS.md) before doing repository work. It covers the data-only module's
   purpose, providers, the provider-level token rule (v2.0.0 removed the `dnsimple_token` input),
-  the fixed 12-week renewal horizon, and validation commands.
+  DNSimple-owned certificate renewal, and validation commands.
 - Path-specific Terraform conventions live in
   [`.github/instructions/terraform.instructions.md`](instructions/terraform.instructions.md) with
   an `applyTo` glob and are referenced from `AGENTS.md`.

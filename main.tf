@@ -20,7 +20,5 @@ data "tls_certificate" "server_certificate" {
 }
 
 locals {
-  certificate_expires_at  = data.tls_certificate.server_certificate.certificates[0].not_after
-  require_validity_until  = timeadd(timestamp(), "2016h") # 12 weeks
-  require_new_certificate = timecmp(local.certificate_expires_at, local.require_validity_until) < 0
+  certificate_expires_at = data.tls_certificate.server_certificate.certificates[0].not_after
 }
